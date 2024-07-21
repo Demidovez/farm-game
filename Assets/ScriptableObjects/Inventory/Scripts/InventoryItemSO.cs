@@ -22,6 +22,7 @@ namespace InventoryScriptableObjectSpace
 
         public InventoryItem Create()
         {
+            Debug.Log(this.Id);
             InventoryItem newItem = new InventoryItem(this);
 
             return newItem;

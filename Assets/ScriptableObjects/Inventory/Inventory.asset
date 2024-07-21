@@ -15,114 +15,115 @@ MonoBehaviour:
   Container:
     Items:
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
     - Item:
-        Id: 0
+        Id: 
         Name: 
       Amount: 0
+  Database: {fileID: 11400000, guid: 939d9cb0b203ebf41966f2c938241629, type: 2}

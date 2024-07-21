@@ -8,20 +8,24 @@ namespace InventoryScriptableObjectSpace
     public class InventoryDatabase : ScriptableObject, ISerializationCallbackReceiver
     {
         public InventoryItemSO[] Items;
-        internal List<InventoryItemSO> Records;
+        internal Dictionary<string, InventoryItemSO> Records;
         
         public void OnBeforeSerialize()
         {
-            Records = new List<InventoryItemSO>();
+            
         }
 
         public void OnAfterDeserialize()
         {
-            Records = new List<InventoryItemSO>();
+            Records = new();
             
             foreach (var inventoryItemSO in Items)
             {
-                Records.Add(inventoryItemSO);
+                if (inventoryItemSO)
+                {
+                    Debug.Log(inventoryItemSO.Id);
+                    Records.TryAdd(inventoryItemSO.Id, inventoryItemSO);
+                }
             }
         }
     }

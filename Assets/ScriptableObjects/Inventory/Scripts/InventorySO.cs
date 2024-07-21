@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace InventoryScriptableObjectSpace
@@ -6,6 +7,22 @@ namespace InventoryScriptableObjectSpace
     public class InventorySO : ScriptableObject
     {
         public Inventory Container;
+        public InventoryDatabase Database;
+
+        public Sprite GetSpriteByItemId(string id)
+        {
+            if (Database.Records.TryGetValue(id, out var slot))
+            {
+                return slot.UiDisplay;
+            }
+
+            Debug.Log(Database.Records.ToList()[0].Key + " " + id);
+            Debug.Log(Database.Records.ToList()[1].Key + " " + id);
+            Debug.Log(Database.Records.ToList()[2].Key + " " + id);
+            Debug.Log(Database.Records.ToList()[3].Key + " " + id);
+            Debug.Log(Database.Records.ToList()[4].Key + " " + id);
+            return null;
+        }
 
         public void AddItem(InventoryItem item, int amount)
         {
@@ -18,7 +35,7 @@ namespace InventoryScriptableObjectSpace
                     return;
                 }
             }
-
+            
             SetEmptySlot(item, amount);
         }
 
@@ -49,6 +66,8 @@ namespace InventoryScriptableObjectSpace
                 if (inventorySlot.IsEmpty)
                 {
                     inventorySlot.Update(item, amount);
+                    
+                    return;
                 }
             }
         }
@@ -66,7 +85,7 @@ namespace InventoryScriptableObjectSpace
         public InventoryItem Item;
         public int Amount;
         
-        public bool IsEmpty => Item != null;
+        public bool IsEmpty => Item.Id == "";
 
         public InventorySlot(InventoryItem item, int amount)
         {

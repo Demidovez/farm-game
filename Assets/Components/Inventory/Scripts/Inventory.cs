@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using InventoryScriptableObjectSpace;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace InventorySpace
 {
@@ -51,8 +53,16 @@ namespace InventorySpace
                 AddEvent(cellObj, EventTriggerType.BeginDrag, delegate { OnDragBegin(cellObj); });
                 AddEvent(cellObj, EventTriggerType.EndDrag, delegate { OnDragEnd(cellObj); });
                 AddEvent(cellObj, EventTriggerType.Drag, delegate { OnDragged(cellObj); });
+
+                var slot = _inventorySO.Container.Items[i];
+
+                if (!slot.IsEmpty)
+                {
+                    cellObj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
+                    cellObj.transform.GetChild(1).GetComponentInChildren<TMP_Text>().text = slot.Amount.ToString();
+                }
                 
-                _itemsDisplayed.Add(cellObj, _inventorySO.Container.Items[i]);
+                _itemsDisplayed.Add(cellObj, slot);
             }
         }
         
