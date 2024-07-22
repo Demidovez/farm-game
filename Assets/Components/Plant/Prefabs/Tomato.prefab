@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8004647051626167994}
   - component: {fileID: 1503554302052153047}
   - component: {fileID: 3773010537761668807}
-  - component: {fileID: 8982249294573481961}
   - component: {fileID: 6984415334266538657}
+  - component: {fileID: 6102034075936012099}
   m_Layer: 0
   m_Name: Tomato
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638274759221526806}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -3.66, y: 0.2520001, z: 7.7}
   m_LocalScale: {x: 1.5543548, y: 1.554355, z: 1.554355}
   m_ConstrainProportionsScale: 0
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8982249294573481961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638274759221526806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ecbe7349379af342b4a1f31eae70e7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventoryItemSO: {fileID: 11400000, guid: a7789bcfb0b717c46bf371e0d55cfab5, type: 2}
 --- !u!65 &6984415334266538657
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -118,5 +105,18 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.26158303, y: 0.9888377, z: 0.32955626}
-  m_Center: {x: 0.0052236016, y: 0.4698482, z: -0.036160287}
+  m_Size: {x: 0.34377074, y: 0.9888377, z: 0.39562163}
+  m_Center: {x: -0.03587024, y: 0.4698482, z: -0.06919297}
+--- !u!114 &6102034075936012099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638274759221526806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ba6eecdf56e264cb884054d50b833e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VegetableSo: {fileID: 11400000, guid: a7789bcfb0b717c46bf371e0d55cfab5, type: 2}

@@ -9,18 +9,13 @@ namespace InventoryScriptableObjectSpace
         public Inventory Container;
         public InventoryDatabase Database;
 
-        public Sprite GetSpriteByItemId(string id)
+        public Sprite GetSpriteByItemId(int id)
         {
             if (Database.Records.TryGetValue(id, out var slot))
             {
                 return slot.UiDisplay;
             }
-
-            Debug.Log(Database.Records.ToList()[0].Key + " " + id);
-            Debug.Log(Database.Records.ToList()[1].Key + " " + id);
-            Debug.Log(Database.Records.ToList()[2].Key + " " + id);
-            Debug.Log(Database.Records.ToList()[3].Key + " " + id);
-            Debug.Log(Database.Records.ToList()[4].Key + " " + id);
+            
             return null;
         }
 
@@ -39,11 +34,16 @@ namespace InventoryScriptableObjectSpace
             SetEmptySlot(item, amount);
         }
 
-        public void RemoveItem(InventoryItem item)
+        public void RemoveItem(InventorySlot slot)
         {
+            if (slot.IsEmpty)
+            {
+                return;
+            }
+            
             foreach (var inventorySlot in Container.Items)
             {
-                if (inventorySlot.Item.Id == item.Id)
+                if (inventorySlot.Item.Id == slot.Item.Id)
                 {
                     inventorySlot.Update(null);
 
@@ -85,7 +85,7 @@ namespace InventoryScriptableObjectSpace
         public InventoryItem Item;
         public int Amount;
         
-        public bool IsEmpty => Item.Id == "";
+        public bool IsEmpty => Item.Id == 0;
 
         public InventorySlot(InventoryItem item, int amount)
         {

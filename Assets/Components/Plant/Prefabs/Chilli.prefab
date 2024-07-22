@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7469985428594933320}
   - component: {fileID: 5706750655206232466}
   - component: {fileID: 797732453334101668}
-  - component: {fileID: 5634713502834776390}
   - component: {fileID: 3526926373340779245}
+  - component: {fileID: 4573175962603221399}
   m_Layer: 0
   m_Name: Chilli
   m_TagString: Untagged
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5634713502834776390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104946842622006396}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ecbe7349379af342b4a1f31eae70e7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventoryItemSO: {fileID: 11400000, guid: a8abd271c78af43448c9062cfc21bb18, type: 2}
 --- !u!135 &3526926373340779245
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -118,5 +105,18 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.39
+  m_Radius: 0.55
   m_Center: {x: 0, y: 0.42671075, z: -1.4212321e-15}
+--- !u!114 &4573175962603221399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104946842622006396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8ba6eecdf56e264cb884054d50b833e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VegetableSo: {fileID: 11400000, guid: a8abd271c78af43448c9062cfc21bb18, type: 2}

@@ -56,13 +56,21 @@ namespace InventorySpace
 
                 var slot = _inventorySO.Container.Items[i];
 
-                if (!slot.IsEmpty)
-                {
-                    cellObj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
-                    cellObj.transform.GetChild(1).GetComponentInChildren<TMP_Text>().text = slot.Amount.ToString();
-                }
+                SetSlotData(cellObj, slot);
                 
                 _itemsDisplayed.Add(cellObj, slot);
+            }
+        }
+
+        private void SetSlotData(GameObject slotObj, InventorySlot slot)
+        {
+            var imageSprite = slotObj.transform.GetChild(0).GetComponentInChildren<Image>();
+            imageSprite.enabled = !slot.IsEmpty;
+                    
+            if (!slot.IsEmpty)
+            {
+                imageSprite.sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
+                slotObj.transform.GetChild(1).GetComponentInChildren<TMP_Text>().text = slot.Amount == 1 ? "" : slot.Amount.ToString();
             }
         }
         
@@ -79,6 +87,8 @@ namespace InventorySpace
         private void OnEnter(GameObject cellObj)
         {
             _mouseItem.hoverObj = cellObj;
+            
+            cellObj.transform.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
 
             if (_itemsDisplayed.TryGetValue(cellObj, out var slot))
             {
@@ -88,22 +98,67 @@ namespace InventorySpace
         
         private void OnExit(GameObject cellObj)
         {
-            Debug.Log("OnExit");
+            cellObj.transform.GetComponent<Image>().color = new Color(0, 0, 0, 0.25f);
+            
+            _mouseItem.hoverObj = null;
+            _mouseItem.hoverSlot = null;
         }
         
         private void OnDragBegin(GameObject cellObj)
         {
-            Debug.Log("OnDragBegin");
+            if (_itemsDisplayed.TryGetValue(cellObj, out var slot))
+            {
+                if (slot.IsEmpty)
+                {
+                    return;
+                }
+                
+                var mouseObject = new GameObject();
+                mouseObject.transform.SetParent(transform);
+            
+                var rectTransform = mouseObject.AddComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(40, 40);
+                
+                var draggedImage = mouseObject.AddComponent<Image>();
+                draggedImage.sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
+                draggedImage.raycastTarget = false;
+
+                _mouseItem.draggedObj = mouseObject;
+                _mouseItem.draggedSlot = slot;
+            }
         }
         
         private void OnDragEnd(GameObject cellObj)
         {
-            Debug.Log("OnDragEnd");
+            if (_itemsDisplayed.TryGetValue(cellObj, out var slot))
+            {
+                if (slot.IsEmpty)
+                {
+                    return;
+                }
+                
+                if (_mouseItem.draggedObj)
+                {
+                    _inventorySO.MoveItem(slot, _mouseItem.draggedSlot);
+                    
+                    Destroy(_mouseItem.draggedObj);
+                    
+                    _mouseItem.draggedObj = null;
+                    _mouseItem.draggedSlot = null;
+                }
+                else
+                {
+                    _inventorySO.RemoveItem(slot);
+                }
+            }
         }
         
         private void OnDragged(GameObject cellObj)
         {
-            Debug.Log("OnDragged");
+            if (_mouseItem.draggedObj)
+            {
+                _mouseItem.draggedObj.GetComponent<RectTransform>().position = Input.mousePosition;
+            }
         }
 
         private Vector2 GetPosition(int index)
@@ -128,6 +183,9 @@ namespace InventorySpace
 
     public class MouseItem
     {
+        public GameObject draggedObj;
+        public InventorySlot draggedSlot;
+        
         public GameObject hoverObj;
         public InventorySlot hoverSlot;
     }

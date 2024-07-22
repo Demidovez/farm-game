@@ -1,5 +1,6 @@
 using InventoryScriptableObjectSpace;
 using InventorySpace;
+using PlantSpace;
 using UnityEngine;
 
 namespace PlayerSpace
@@ -16,13 +17,17 @@ namespace PlayerSpace
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent(out InventoryItemHolder inventoryItemHolder))
+            if (other.TryGetComponent(out Plant plant))
             {
-                var inventoryItem = inventoryItemHolder.InventoryItemSO.Create();
+                if (plant.IsReady)
+                {
+                    var inventoryItem = plant.CreateInventoryItem();
                 
-                _inventorySo.AddItem(inventoryItem, 1);
+                    _inventorySo.AddItem(inventoryItem, 1);
                 
-                Destroy(other.gameObject);
+                    // Destroy(other.gameObject);
+                }
+                
             }
         }
     }

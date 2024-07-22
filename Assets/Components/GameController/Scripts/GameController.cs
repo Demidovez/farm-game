@@ -45,7 +45,7 @@ namespace GameControllerSpace
 
             LockCamera(!IsOpenedInventory);
             
-            Cursor.lockState = IsOpenedInventory ? CursorLockMode.Confined : CursorLockMode.Locked; 
+            Cursor.lockState = IsOpenedInventory ? CursorLockMode.None : CursorLockMode.Locked; 
             
             _inventoryObj.SetActive(IsOpenedInventory);
         }

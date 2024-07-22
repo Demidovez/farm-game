@@ -13,7 +13,7 @@ namespace InventoryScriptableObjectSpace
     
     public abstract class InventoryItemSO : ScriptableObject
     {
-        public string Id = System.Guid.NewGuid().ToString();
+        public int Id;
         public string Name;
         public Sprite UiDisplay;
         public EInventoryItem Type;
@@ -22,7 +22,6 @@ namespace InventoryScriptableObjectSpace
 
         public InventoryItem Create()
         {
-            Debug.Log(this.Id);
             InventoryItem newItem = new InventoryItem(this);
 
             return newItem;
@@ -32,7 +31,7 @@ namespace InventoryScriptableObjectSpace
     [System.Serializable]
     public class InventoryItem
     {
-        public string Id;
+        public int Id;
         public string Name;
 
         public InventoryItem(InventoryItemSO itemSO)
