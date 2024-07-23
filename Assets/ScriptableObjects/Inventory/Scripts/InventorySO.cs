@@ -34,18 +34,13 @@ namespace InventoryScriptableObjectSpace
             SetEmptySlot(item, amount);
         }
 
-        public void RemoveItem(InventorySlot slot)
+        public void RemoveItem(InventoryItem item)
         {
-            if (slot.IsEmpty)
-            {
-                return;
-            }
-            
             foreach (var inventorySlot in Container.Items)
             {
-                if (inventorySlot.Item.Id == slot.Item.Id)
+                if (inventorySlot.Item.Id == item.Id)
                 {
-                    inventorySlot.Update(null);
+                    inventorySlot.Clear();
 
                     return;
                 }
@@ -109,6 +104,12 @@ namespace InventoryScriptableObjectSpace
         {
             Item = slot.Item;
             Amount = slot.Amount;
+        }
+
+        public void Clear()
+        {
+            Item = InventoryItem.GetEmpty();
+            Amount = 0;
         }
 
         public void AddAmount(int value)

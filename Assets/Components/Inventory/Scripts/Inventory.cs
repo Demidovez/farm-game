@@ -21,10 +21,12 @@ namespace InventorySpace
 
         private Dictionary<GameObject, InventorySlot> _itemsDisplayed;
         private MouseItem _mouseItem;
+        private Canvas _parentCanvas;
 
         private void Start()
         {
             _mouseItem = new MouseItem();
+            _parentCanvas = transform.parent.GetComponent<Canvas>();
         }
 
         private void OnEnable()
@@ -51,8 +53,8 @@ namespace InventorySpace
                 AddEvent(cellObj, EventTriggerType.PointerEnter, delegate { OnEnter(cellObj); });
                 AddEvent(cellObj, EventTriggerType.PointerExit, delegate { OnExit(cellObj); });
                 AddEvent(cellObj, EventTriggerType.BeginDrag, delegate { OnDragBegin(cellObj); });
-                AddEvent(cellObj, EventTriggerType.EndDrag, delegate { OnDragEnd(cellObj); });
-                AddEvent(cellObj, EventTriggerType.Drag, delegate { OnDragged(cellObj); });
+                AddEvent(cellObj, EventTriggerType.EndDrag, delegate { OnDragEnd(); });
+                AddEvent(cellObj, EventTriggerType.Drag, delegate { OnDragged(); });
 
                 var slot = _inventorySO.Container.Items[i];
 
@@ -61,17 +63,22 @@ namespace InventorySpace
                 _itemsDisplayed.Add(cellObj, slot);
             }
         }
+        
+        private void UpdateSlots()
+        {
+            foreach (var itemDisplayed in _itemsDisplayed)
+            {
+                SetSlotData(itemDisplayed.Key, itemDisplayed.Value);
+            }
+        }
 
         private void SetSlotData(GameObject slotObj, InventorySlot slot)
         {
             var imageSprite = slotObj.transform.GetChild(0).GetComponentInChildren<Image>();
             imageSprite.enabled = !slot.IsEmpty;
-                    
-            if (!slot.IsEmpty)
-            {
-                imageSprite.sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
-                slotObj.transform.GetChild(1).GetComponentInChildren<TMP_Text>().text = slot.Amount == 1 ? "" : slot.Amount.ToString();
-            }
+            imageSprite.sprite = slot.IsEmpty ? null : _inventorySO.GetSpriteByItemId(slot.Item.Id);
+            
+            slotObj.transform.GetChild(1).GetComponentInChildren<TMP_Text>().text = slot.Amount <= 1 ? "" : slot.Amount.ToString();
         }
         
         private void DestroySlots()
@@ -86,14 +93,9 @@ namespace InventorySpace
 
         private void OnEnter(GameObject cellObj)
         {
-            _mouseItem.hoverObj = cellObj;
-            
             cellObj.transform.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
 
-            if (_itemsDisplayed.TryGetValue(cellObj, out var slot))
-            {
-                _mouseItem.hoverSlot = slot;
-            }
+            _mouseItem.hoverObj = cellObj;
         }
         
         private void OnExit(GameObject cellObj)
@@ -101,7 +103,6 @@ namespace InventorySpace
             cellObj.transform.GetComponent<Image>().color = new Color(0, 0, 0, 0.25f);
             
             _mouseItem.hoverObj = null;
-            _mouseItem.hoverSlot = null;
         }
         
         private void OnDragBegin(GameObject cellObj)
@@ -115,49 +116,54 @@ namespace InventorySpace
                 
                 var mouseObject = new GameObject();
                 mouseObject.transform.SetParent(transform);
-            
+                
                 var rectTransform = mouseObject.AddComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(40, 40);
+                rectTransform.sizeDelta = new Vector2(45, 45);
+                rectTransform.localScale = new Vector3(1, 1, 1);
+                rectTransform.localPosition = Vector3.zero;
+                rectTransform.localRotation = Quaternion.identity;
                 
                 var draggedImage = mouseObject.AddComponent<Image>();
                 draggedImage.sprite = _inventorySO.GetSpriteByItemId(slot.Item.Id);
                 draggedImage.raycastTarget = false;
-
+                
                 _mouseItem.draggedObj = mouseObject;
                 _mouseItem.draggedSlot = slot;
             }
         }
         
-        private void OnDragEnd(GameObject cellObj)
+        private void OnDragEnd()
         {
-            if (_itemsDisplayed.TryGetValue(cellObj, out var slot))
+            if (_mouseItem.hoverObj && _itemsDisplayed.TryGetValue(_mouseItem.hoverObj, out var targetSlot))
             {
-                if (slot.IsEmpty)
+                if (_mouseItem.draggedSlot != null)
                 {
-                    return;
-                }
-                
-                if (_mouseItem.draggedObj)
-                {
-                    _inventorySO.MoveItem(slot, _mouseItem.draggedSlot);
-                    
-                    Destroy(_mouseItem.draggedObj);
-                    
-                    _mouseItem.draggedObj = null;
-                    _mouseItem.draggedSlot = null;
-                }
-                else
-                {
-                    _inventorySO.RemoveItem(slot);
+                    _inventorySO.MoveItem(_mouseItem.draggedSlot, targetSlot);
+                    UpdateSlots();
                 }
             }
+            else if(_mouseItem.hoverObj == null && _mouseItem.draggedSlot != null)
+            {
+                _inventorySO.RemoveItem(_mouseItem.draggedSlot.Item);
+                UpdateSlots();
+            }
+            
+            Destroy(_mouseItem.draggedObj);
+            _mouseItem.draggedObj = null;
+            _mouseItem.draggedSlot = null;
         }
         
-        private void OnDragged(GameObject cellObj)
+        private void OnDragged()
         {
             if (_mouseItem.draggedObj)
             {
-                _mouseItem.draggedObj.GetComponent<RectTransform>().position = Input.mousePosition;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                    _parentCanvas.transform as RectTransform, 
+                    Input.mousePosition, 
+                    Camera.main, 
+                    out Vector2 pos);
+                
+                _mouseItem.draggedObj.transform.position = _parentCanvas.transform.TransformPoint(pos);
             }
         }
 
@@ -183,11 +189,10 @@ namespace InventorySpace
 
     public class MouseItem
     {
+        public GameObject hoverObj;
+        
         public GameObject draggedObj;
         public InventorySlot draggedSlot;
-        
-        public GameObject hoverObj;
-        public InventorySlot hoverSlot;
     }
 }
 

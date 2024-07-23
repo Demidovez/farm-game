@@ -24,10 +24,7 @@ namespace PlayerSpace
                     var inventoryItem = plant.CreateInventoryItem();
                 
                     _inventorySo.AddItem(inventoryItem, 1);
-                
-                    // Destroy(other.gameObject);
                 }
-                
             }
         }
     }

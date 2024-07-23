@@ -39,5 +39,16 @@ namespace InventoryScriptableObjectSpace
             Id = itemSO.Id;
             Name = itemSO.Name;
         }
+        
+        public InventoryItem()
+        {
+            Id = 0;
+            Name = "";
+        }
+
+        public static InventoryItem GetEmpty()
+        {
+            return new InventoryItem();
+        }
     }
 }
